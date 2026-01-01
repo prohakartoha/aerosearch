@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .history-container {
+            margin-top: 20px;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .history-title {
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            text-shadow: 0 1px 2px black;
+        }
+
+        .history-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .history-item {
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 5px 12px;
+            border-radius: 15px;
+            color: white;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #00d2ff;
+        }
+
+        .clear-history {
+            cursor: pointer;
+            color: #ff4d4d;
+            text-decoration: underline;
+            font-size: 0.7rem;
+        }
+
+        :root {
+            --aero-border: rgba(255, 255, 255, 0.4);
+            --aero-glass: rgba(255, 255, 255, 0.18);
+            --win-blue: #227ce8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #004687 url('https://i.pinimg.com/originals/35/6f/b3/356fb30c0b1c8af86a3fc6c01acf5049.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            overflow-x: hidden;
+        }
+
+        .window {
+            width: 100%;
+            max-width: 950px;
+            background: var(--aero-glass);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border-radius: 12px 12px 8px 8px;
+            border: 1px solid var(--aero-border);
+            box-shadow: 
+                0 0 0 1px rgba(0,0,0,0.2),
+                0 30px 80px rgba(0,0,0,0.6),
+                inset 0 0 15px rgba(255,255,255,0.3);
+            position: relative;
+            animation: window-appear 0.6s ease-out;
+        }
+
+        @keyframes window-appear {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .title-bar {
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+        }
+
+        .title-text {
+            color: white;
+            font-size: 0.9rem;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .control-btn {
+            width: 45px;
+            height: 25px;
+            border: 1px solid rgba(0,0,0,0.3);
+            border-radius: 3px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(0,0,0,0.1));
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+
+        .control-btn.close:hover { background: #e81123; }
+
+        .window-content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 0 20px rgba(0, 162, 255, 1), 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 35px;
+            font-style: italic;
+        }
+
+        .engine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .engine-btn {
+            padding: 15px 10px;
+            border-radius: 6px;
+            border: 1px solid #555;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, 
+                rgba(255,255,255,0.2) 0%, 
+                rgba(255,255,255,0.1) 49%, 
+                rgba(0,0,0,0.2) 50%, 
+                rgba(0,0,0,0.3) 100%);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .engine-btn i { font-size: 1.5rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+
+        .engine-btn:hover {
+            border-color: #00d2ff;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4), inset 0 1px 0 rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+
+        .engine-btn.active {
+            background: linear-gradient(to bottom, #5cb1ff 0%, #3488d6 49%, #1067b2 50%, #2086e0 100%);
+            border-color: #003366;
+            box-shadow: 0 0 20px rgba(52, 136, 214, 0.6);
+        }
+
+        .search-container {
+            display: flex;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            border: 2px solid #222;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            outline: none;
+            background: transparent;
+            min-width: 0;
+        }
+
+        .search-btn {
+            background: linear-gradient(to bottom, #a2ff00 0%, #68a500 50%, #4a7500 51%, #79c000 100%);
+            border: 1px solid #2d4d00;
+            color: white;
+            padding: 0 35px;
+            border-radius: 5px;
+            font-weight: 900;
+            cursor: pointer;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+
+        .stats-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .stat-box {
+            flex: 1;
+            min-width: 140px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 20px 10px;
+            border-radius: 8px;
+            color: white;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .stat-box i { font-size: 1.5rem; color: #00d2ff; margin-bottom: 10px; display: block; }
+        .stat-box b { font-size: 1.8rem; display: block; margin-bottom: 5px; }
+        .stat-box span { font-size: 0.75rem; font-weight: bold; text-transform: uppercase; opacity: 0.8; }
+
+        @media (max-width: 600px) {
+            .window-content { padding: 25px 15px; }
+            .search-container { flex-direction: column; gap: 10px; background: transparent; border: none; box-shadow: none; padding: 0; }
+            .search-input { background: white; border-radius: 8px; border: 2px solid #222; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3); }
+            .search-btn { padding: 18px; justify-content: center; }
+            .engine-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-text">
+                <i class="fas fa-search"></i> Potato Search
+            </div>
+            <div class="window-controls">
+                <div class="control-btn"><i class="fas fa-minus"></i></div>
+                <div class="control-btn"><i class="far fa-square"></i></div>
+                <div class="control-btn close"><i class="fas fa-times"></i></div>
+            </div>
+        </div>
+
+        <div class="window-content">
+            <h1 class="logo"><i class="fas fa-cloud-sun"></i>aerosearch.fun</h1>
+            
+            <div class="engine-grid">
+                <button class="engine-btn active" data-engine="google">
+                    <i class="fab fa-google"></i>
+                    <span>GOOGLE</span>
+                </button>
+                <button class="engine-btn" data-engine="yandex">
+                    <i class="fab fa-yandex"></i>
+                    <span>YANDEX</span>
+                </button>
+                <button class="engine-btn" data-engine="bing">
+                    <i class="fab fa-microsoft"></i>
+                    <span>BING</span>
+                </button>
+                <button class="engine-btn" data-engine="duckduckgo">
+                    <i class="fas fa-user-secret"></i>
+                    <span>DUCKDUCKGO</span>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Введите ваш запрос...">
+                <button id="searchBtn" class="search-btn">
+                    <i class="fas fa-search"></i> ПОИСК
+                </button>
+            </div>
+
+            <div class="history-container" id="historyBlock" style="display: none;">
+                <div class="history-title">
+                    <span><i class="fas fa-history"></i> ПОСЛЕДНИЕ ЗАПРОСЫ:</span>
+                    <span class="clear-history" onclick="clearHistory()">Очистить</span>
+                </div>
+                <ul class="history-list" id="historyList"></ul>
+            </div>
+
+            <div style="margin-top: 40px; color: white; font-weight: bold; font-size: 0.8rem; text-shadow: 0 1px 2px black;">
+                <i class="fas fa-shield-alt"></i> © 2026 PROHA KARTOHA
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const engines = {
+            google: "https://www.google.com/search?q=",
+            yandex: "https://yandex.ru/search/?text=",
+            bing: "https://www.bing.com/search?q=",
+            duckduckgo: "https://duckduckgo.com/?q="
+        };
+
+        let current = localStorage.getItem('selectedEngine') || "google";
+        let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setActiveEngine(current);
+            renderHistory();
+            document.getElementById('searchInput').focus();
+        });
+
+        function setActiveEngine(engineKey) {
+            current = engineKey;
+            localStorage.setItem('selectedEngine', engineKey);
+            
+            document.querySelectorAll('.engine-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.engine === engineKey);
+            });
+        }
+
+        document.querySelectorAll('.engine-btn').forEach(btn => {
+            btn.addEventListener('click', () => setActiveEngine(btn.dataset.engine));
+        });
+
+        function doSearch() {
+            const q = document.getElementById('searchInput').value.trim();
+            if (q) {
+                if (!searchHistory.includes(q)) {
+                    searchHistory.unshift(q);
+                    if (searchHistory.length > 10) searchHistory.pop();
+                    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+                }
+                
+                document.getElementById('searchBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> WAIT';
+                setTimeout(() => {
+                    window.open(engines[current] + encodeURIComponent(q), '_blank');
+                    document.getElementById('searchBtn').innerHTML = '<i class="fas fa-search"></i> ПОИСК';
+                }, 400);
+                
+                renderHistory();
+            }
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            const block = document.getElementById('historyBlock');
+            
+            if (searchHistory.length === 0) {
+                block.style.display = 'none';
+                return;
+            }
+            
+            block.style.display = 'block';
+            list.innerHTML = searchHistory.map(item => 
+                `<li class="history-item" onclick="quickSearch('${item.replace(/'/g, "\\'")}')">${item}</li>`
+            ).join('');
+        }
+
+        function quickSearch(text) {
+            document.getElementById('searchInput').value = text;
+            doSearch();
+        }
+
+        function clearHistory() {
+            searchHistory = [];
+            localStorage.removeItem('searchHistory');
+            renderHistory();
+        }
+
+        document.getElementById('searchBtn').addEventListener('click', doSearch);
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') doSearch();
+        });
+    </script>
+</body>
+</html>
